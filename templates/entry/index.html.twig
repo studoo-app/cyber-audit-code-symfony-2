@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Entry index{% endblock %}
+
+{% block body %}
+    <h1>Entry index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Title</th>
+                <th>Login</th>
+                <th>Password</th>
+                <th>Url</th>
+                <th>UpdatedAt</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for entry in entries %}
+            <tr>
+                <td>{{ entry.id }}</td>
+                <td>{{ entry.title }}</td>
+                <td>{{ entry.login }}</td>
+                <td>{{ entry.password }}</td>
+                <td>{{ entry.url }}</td>
+                <td>{{ entry.updatedAt ? entry.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>
+                    <a href="{{ path('app_entry_show', {'id': entry.id}) }}">show</a>
+                    <a href="{{ path('app_entry_edit', {'id': entry.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="7">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_entry_new') }}">Create new</a>
+{% endblock %}

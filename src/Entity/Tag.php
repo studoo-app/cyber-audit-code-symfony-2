@@ -20,6 +20,17 @@ class Tag
     #[ORM\JoinColumn(nullable: false)]
     private ?User $user = null;
 
+    /**
+     * @param string|null $label
+     * @param User|null $user
+     */
+    public function __construct(?string $label, ?User $user)
+    {
+        $this->label = $label;
+        $this->user = $user;
+    }
+
+
     public function getId(): ?int
     {
         return $this->id;

@@ -35,6 +35,12 @@ class Entry
     #[ORM\ManyToOne]
     private ?Tag $tag = null;
 
+    public function __construct()
+    {
+        $this->updatedAt = new \DateTimeImmutable('now', new \DateTimeZone("Europe/Paris"));
+    }
+
+
     public function getId(): ?int
     {
         return $this->id;

@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Entry{% endblock %}
+
+{% block body %}
+    <h1>Entry</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ entry.id }}</td>
+            </tr>
+            <tr>
+                <th>Title</th>
+                <td>{{ entry.title }}</td>
+            </tr>
+            <tr>
+                <th>Login</th>
+                <td>{{ entry.login }}</td>
+            </tr>
+            <tr>
+                <th>Password</th>
+                <td>{{ entry.password }}</td>
+            </tr>
+            <tr>
+                <th>Url</th>
+                <td>{{ entry.url }}</td>
+            </tr>
+            <tr>
+                <th>UpdatedAt</th>
+                <td>{{ entry.updatedAt ? entry.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_entry_index') }}">back to list</a>
+
+    <a href="{{ path('app_entry_edit', {'id': entry.id}) }}">edit</a>
+
+    {{ include('entry/_delete_form.html.twig') }}
+{% endblock %}
