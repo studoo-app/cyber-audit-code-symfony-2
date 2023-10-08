@@ -11,14 +11,15 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route('/entry')]
+#[Route('/entries')]
 class EntryController extends AbstractController
 {
     #[Route('/', name: 'app_entry_index', methods: ['GET'])]
     public function index(EntryRepository $entryRepository): Response
     {
+        $entries = $entryRepository->findBy(["user"=>$this->getUser()]);
         return $this->render('entry/index.html.twig', [
-            'entries' => $entryRepository->findAll(),
+            'entries' => $entries
         ]);
     }
 
