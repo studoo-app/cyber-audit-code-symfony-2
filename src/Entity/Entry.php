@@ -32,7 +32,7 @@ class Entry
     #[ORM\JoinColumn(nullable: false)]
     private ?User $user = null;
 
-    #[ORM\ManyToOne]
+    #[ORM\ManyToOne(targetEntity: Tag::class,fetch: 'EAGER')]
     private ?Tag $tag = null;
 
     public function __construct()

@@ -3,6 +3,8 @@
 namespace App\Form;
 
 use App\Entity\Entry;
+use App\Entity\Tag;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -16,7 +18,11 @@ class EntryType extends AbstractType
             ->add('login')
             ->add('password')
             ->add('url')
-            ->add('tag')
+            ->add('tag',EntityType::class,[
+                'class'=>Tag::class,
+                'choices'=>$options["tags"],
+                'choice_label'=>'label'
+            ])
         ;
     }
 
@@ -24,6 +30,7 @@ class EntryType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Entry::class,
+            'tags'=>[]
         ]);
     }
 }

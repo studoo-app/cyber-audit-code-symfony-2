@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Entry;
+use App\Entity\Tag;
 use App\Form\EntryType;
 use App\Repository\EntryRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -27,7 +28,9 @@ class EntryController extends AbstractController
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
         $entry = new Entry();
-        $form = $this->createForm(EntryType::class, $entry);
+        $form = $this->createForm(EntryType::class, $entry,[
+            'tags'=>$entityManager->getRepository(Tag::class)->findBy(['user'=>$this->getUser()])
+        ]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -46,6 +49,7 @@ class EntryController extends AbstractController
     #[Route('/{id}', name: 'app_entry_show', methods: ['GET'])]
     public function show(Entry $entry): Response
     {
+
         return $this->render('entry/show.html.twig', [
             'entry' => $entry,
         ]);
@@ -54,7 +58,9 @@ class EntryController extends AbstractController
     #[Route('/{id}/edit', name: 'app_entry_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Entry $entry, EntityManagerInterface $entityManager): Response
     {
-        $form = $this->createForm(EntryType::class, $entry);
+        $form = $this->createForm(EntryType::class, $entry,[
+            'tags'=>$entityManager->getRepository(Tag::class)->findBy(['user'=>$this->getUser()])
+        ]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {

@@ -1,0 +1,40 @@
+    {% set navBg = "bg-light" %}
+    {% set offcanvasBg = "" %}
+    {% set offcanvasText = "" %}
+    {% set navBg = "bg-light" %}
+    {% if is_granted('ROLE_MONO') %}
+        {% set navBg = "navbar-dark bg-dark" %}
+        {% set offcanvasBg = "bg-dark" %}
+        {% set offcanvasText = "text-light" %}
+    {% elseif is_granted('ROLE_ELEVE') %}
+        {% set navBg = "navbar-dark bg-primary" %}
+        {% set offcanvasBg = "bg-primary" %}
+        {% set offcanvasText = "text-light" %}
+    {% endif %}
+    <nav class="navbar {{ navBg }} fixed-top">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">MSV 🔐</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="offcanvas offcanvas-end {{ offcanvasBg }}" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
+                <div class="offcanvas-header">
+                    <h5 class="offcanvas-title {{ offcanvasText }}" id="offcanvasNavbarLabel">My Secure Vault 🔐</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                </div>
+                <div class="offcanvas-body">
+                    {%  if app.user %}
+                        <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+                            {% if is_granted('ROLE_ADMIN') %}
+                                {% include('components/_admin_links.html.twig') %}
+                            {% elseif is_granted('ROLE_USER') %}
+                                {% include('components/_client_links.html.twig') %}
+                            {% endif %}
+{#                            <li><a  class="nav-link {{ offcanvasText }}" href="{{ path("app_profil_show") }}">Profil</a></li>#}
+                            <li><a  class="nav-link {{ offcanvasText }}" href="{{ path("app_logout") }}">❌ Deconnexion ({{ app.user.email }})</a></li>
+                        </ul>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </nav>

@@ -1,43 +1,52 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Entry index{% endblock %}
+{% block title %}Liste de entrées{% endblock %}
 
 {% block body %}
-    <h1>Entry index</h1>
+    <div class="row">
+        <div class="col-12">
+            {% for label, messages in app.flashes(['success']) %}
+                {% for message in messages %}
+                    <div class="alert alert-{{ label }} alert-dismissible fade show" role="alert">
+                        <p>{{ message }}</p>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                {% endfor %}
+            {% endfor %}
+        </div>
+    </div>
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Title</th>
-                <th>Login</th>
-                <th>Password</th>
-                <th>Url</th>
-                <th>UpdatedAt</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for entry in entries %}
-            <tr>
-                <td>{{ entry.id }}</td>
-                <td>{{ entry.title }}</td>
-                <td>{{ entry.login }}</td>
-                <td>{{ entry.password }}</td>
-                <td>{{ entry.url }}</td>
-                <td>{{ entry.updatedAt ? entry.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
-                <td>
-                    <a href="{{ path('app_entry_show', {'id': entry.id}) }}">show</a>
-                    <a href="{{ path('app_entry_edit', {'id': entry.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="7">no records found</td>
-            </tr>
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-5 g-4">
+
+        <div class="col">
+            <div class="card h-100 bg-light" id="add-bike-card">
+
+                <div class="card-body d-flex align-items-center justify-content-center">
+                    <a class="stretched-link text-center text-secondary" href="{{ path('app_entry_new') }}">
+                        <i class="bi-plus-circle fs-1"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+
+        {% for index,entry in entries %}
+            <div class="col">
+                <div class="card bg-light h-100" id="entry-card-{{ index }}">
+                    <div class="card-body d-flex align-items-center justify-content-center ">
+                        <div class="text-center">
+                            <h5 class="card-title" id="entry-name-{{ index }}">{{ entry.title }}</h5>
+                            <p class="card-subtitle mb-2 text-muted" id="entry-tag-{{ index }}">{{entry.tag ? entry.tag.label : "" }} </p>
+                            <p class="card-subtitle mb-2 text-muted" id="entry-updatedat-{{ index }}">Mis à jour le : {{ entry.updatedAt ? entry.updatedAt|date('d/m/Y') : '' }}</p>
+                        </div>
+                        <a class="stretched-link" href="{{ path('app_entry_show', {'id': entry.id}) }}"></a>
+
+                    </div>
+                </div>
+            </div>
         {% endfor %}
-        </tbody>
-    </table>
 
-    <a href="{{ path('app_entry_new') }}">Create new</a>
+
+    </div>
+
 {% endblock %}
